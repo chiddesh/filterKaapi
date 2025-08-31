@@ -20,7 +20,7 @@ def lexer(data):
                 tokens.append(("VAR",var_name,"STRING",var_value[1:-1]))
             elif var_value.isdigit():
                 tokens.append(("VAR",var_name,"NUM",var_value))
-            elif any(op in var_value for op in ["+","-","*","/","%","//",">","<","==",">=","<=", "!="]):
+            elif any(op in var_value for op in ["+","-","*","/","%","//",">","<","==",">=","<=", "!=","(",")"]):
                 tokens.append(("VAR",var_name,"EXPR",var_value))
             else:
                 tokens.append(("VAR",var_name,"VAR",var_value))
@@ -31,7 +31,7 @@ def lexer(data):
                 tokens.append(("PRINT","STRING",arg[1:-1]))
             elif arg.isdigit():
                 tokens.append(("PRINT","NUM",arg))
-            elif any(op in arg for op in ["+","-","*","/","%","//",">","<","==",">=","<=", "!="]):
+            elif any(op in arg for op in ["+","-","*","/","%","//",">","<","==",">=","<=", "!=","(",")"]):
                 tokens.append(("PRINT","EXPR",arg))
             else:
                 tokens.append(("PRINT","VAR",arg))
@@ -74,6 +74,18 @@ def lexer(data):
                 body.append(lines[i].strip())
                 i+= 1
             tokens.append(("LOOP",condition,body))
+        
+        elif line.startswith("notepaniko"):
+            rest = line[len("notepaniko"):].strip()
+            if " " in rest:
+                var_name,msg = rest.split(" ",1)
+                msg = msg.strip()
+                if msg.startswith("\"") and msg.endswith("\""):
+                    msg = msg[1:-1]
+                else:
+                    var_name = rest
+                    msg = ""
+            tokens.append(("INPUT",var_name,msg))
 
         else:
             tokens.append(("ERROR","SYNTAX ERROR",line))

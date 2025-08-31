@@ -70,6 +70,15 @@ def parser(tokens):
                 for line in body:
                     evaluate_lines(line)
         
+
+        elif token[0] == "INPUT":
+            _, var_name,msg = token
+            user_input = input(msg+": ")
+            if user_input.isdigit():
+                symbol_table[var_name] = int(user_input)
+            else:
+                symbol_table[var_name] = user_input
+
         elif token[0] == "ERROR":
             _,error_msg,value = token
             print(error_msg,value)

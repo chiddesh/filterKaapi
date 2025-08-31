@@ -1,21 +1,29 @@
 import sys
 from .lexer import lexer
+import re
 
 symbol_table = {}
 function_table = {}
 
 
 def evaluate(expr):
-    tokens = expr.split()
-    for i,token in enumerate(tokens):
-        if token in symbol_table:
-            val = symbol_table[token]
-            if isinstance(val,str) and not(val.startswith("\"") and val.endswith("\"")):
-                tokens[i] = f"\"{val}\""
+    def repl_var(match):
+        var = match.group(0)
+        if var in symbol_table:
+            val = symbol_table[var]
+            # Wrap strings in quotes
+            if isinstance(val, str):
+                return f'"{val}"'
             else:
-                tokens[i] = str(val)
-    expr_value = " ".join(tokens)
-    return eval(expr_value)
+                return str(val)
+        return var
+    expr_fixed = re.sub(r'\b[a-zA-Z_][a-zA-Z0-9_]*\b', repl_var, expr)
+    
+    try:
+        return eval(expr_fixed)
+    except Exception as e:
+        print("Evaluation error:", e)
+        return None
 
 def evaluate_lines(line):
     line = line.strip()
@@ -30,6 +38,8 @@ def evaluate_lines(line):
         else:
             if arg in symbol_table:
                 print(symbol_table[arg])
+            else:
+                print("UNDEFINED VARIABLE",arg)
     
     elif line.startswith("vechiko"):
         var_parts = line[len("vechiko"):].strip().split("=",1)
@@ -39,7 +49,7 @@ def evaluate_lines(line):
             symbol_table[var_name] = var_value
         elif var_value.isdigit():
             symbol_table[var_name] = int(var_value)
-        elif any(op in var_value for op in ["+","-","*","/","%","//",">","<","==",">=","<=", "!="]):
+        elif any(op in var_value for op in ["+","-","*","/","%","//",">","<","==",">=","<=", "!=","(",")"]):
             symbol_table[var_name] = evaluate(var_value)
         elif var_value in symbol_table:
             symbol_table[var_name] = symbol_table[var_value]
