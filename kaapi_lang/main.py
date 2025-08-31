@@ -5,7 +5,7 @@ from kaapi_lang.parser import parser
 symbol_table = {}
 function_table = {}
 
-def run_code(code):  # ✅ Rename this so cli.py can use it
+def run_code(code):
     tokens = lexer(code)
     parser(tokens)
 
@@ -16,6 +16,6 @@ def openFile(filename):
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         code = openFile(sys.argv[1])
-        run_code(code)  # ✅ Updated to match
+        run_code(code)
     else:
         print("Usage: python main.py <filename>")

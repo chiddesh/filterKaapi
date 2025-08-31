@@ -15,7 +15,7 @@ setup(
     python_requires=">=3.7",
     entry_points={
         "console_scripts": [
-            "kaapi=kaapi_lang.cli:main",  # Change cli.py & function if needed
+            "kaapi=kaapi_lang.cli:main",
         ]
     },
 )
