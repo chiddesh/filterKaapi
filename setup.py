@@ -4,7 +4,7 @@ with open("README.md", "r", encoding="utf-8") as f:
     long_description = f.read()
 
 setup(
-    name="kaapi-lang",
+    name="filterKaapi",
     version="0.1.0",
     description="FilterKaapi: A Tamil-inspired programming language",
     long_description=long_description,
