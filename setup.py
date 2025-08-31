@@ -1,22 +1,21 @@
 from setuptools import setup, find_packages
 
+with open("README.md", "r", encoding="utf-8") as f:
+    long_description = f.read()
+
 setup(
-    name="kaapi-lang",  # Package name on PyPI
+    name="kaapi-lang",
     version="0.1.0",
+    description="FilterKaapi: A Tamil-inspired programming language",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+    author="Chiddesh",
+    license="MIT",
     packages=find_packages(),
+    python_requires=">=3.7",
     entry_points={
         "console_scripts": [
-            "kaapi=kaapi_lang.cli:main",
-        ],
+            "kaapi=kaapi_lang.cli:main",  # Change cli.py & function if needed
+        ]
     },
-    python_requires=">=3.7",
-    description="FilterKaapi: A Tamil-inspired programming language",
-    author="Chiddesh",
-    author_email="your_email@example.com",
-    url="https://github.com/chiddesh/filterKaapi",
-    classifiers=[
-        "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: MIT License",
-        "Operating System :: OS Independent",
-    ],
 )
