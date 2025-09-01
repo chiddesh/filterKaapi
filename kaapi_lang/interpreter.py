@@ -1,5 +1,6 @@
 import sys
 from .lexer import lexer
+from .functions import push,pop,remove
 import re
 
 symbol_table = {}
@@ -35,6 +36,13 @@ def evaluate_lines(line):
             print(arg)
         elif any(op in arg for op in ["+","-","*","/","%","//",">","<","==",">=","<=", "!="]):
             print(evaluate(arg))
+        elif "[" in arg and arg.endswith("]"):
+            var_name,index = arg[:-1].split("[",1)
+            index = evaluate(index.strip())
+            if var_name in symbol_table and isinstance(symbol_table[var_name],list):
+                print(symbol_table[var_name][index])
+            else:
+             print("INVALID LIST ACCESS", arg)
         else:
             if arg in symbol_table:
                 print(symbol_table[arg])
@@ -61,6 +69,41 @@ def evaluate_lines(line):
             evaluate_lines(true_stmt.strip())
         else:
             evaluate_lines(false_stmt.strip())
+    
+    elif line.startswith("notepaniko"):
+        rest = line[len("notepaniko"):].strip()
+        if " " in rest:
+            var_name,msg = rest.split(" ",1)
+            msg = msg.strip()
+            if msg.startswith("\"") and msg.endswith("\""):
+                msg = msg[1:-1]
+            else:
+                var_name = rest
+                msg = ""
+        user_input = input(msg+": ")
+        if user_input.isdigit():
+            symbol_table[var_name] = int(user_input)
+        else:
+            symbol_table[var_name] = user_input
+
+    
+    elif line.startswith("push"):
+        var_name,raw_value = push(line)
+        if var_name in symbol_table and isinstance(symbol_table[var_name],list):
+            value = evaluate(raw_value)
+            symbol_table[var_name].append(value)
+    
+    elif line.startswith("pop"):
+        var_name = pop(line)
+        if var_name in symbol_table and isinstance(symbol_table[var_name],list):
+            symbol_table[var_name].pop()
+    
+    elif line.startswith("remove"):
+        var_name,raw_value = remove(line)
+        if var_name in symbol_table and isinstance(symbol_table[var_name],list):
+            value = evaluate(raw_value)
+            symbol_table[var_name].remove(value)
+
 
 def openFile(filename):
     with open(filename, "r") as f:

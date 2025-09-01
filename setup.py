@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as f:
 
 setup(
     name="filterKaapi",
-    version="0.1.3",
+    version="0.1.4",
     description="FilterKaapi: A Tamil-inspired programming language",
     long_description=long_description,
     long_description_content_type="text/markdown",

@@ -16,7 +16,7 @@ def is_complete_kaapi_code(code: str) -> bool:
     return open_blocks <= 0
 
 def repl():
-    print("Kaapi REPL (type 'exit' to quit')")
+    print("Start writing your Hot filter Kaapi (type 'exit' to quit REPL')")
     buffer = ""
 
     while True:

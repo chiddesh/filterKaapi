@@ -9,6 +9,9 @@ Just like Chennai's famous filter coffee, this language is simple, strong, and g
 - `vechiko` → variable declaration (means "keep it")
 - `iruntha ... ilana ...` → if ... else
 - `varai` → while loop
+- `seyyu` → Functions
+- `notepaniko` → Input from user
+- `push,pop,remove,length` → List operations
 
 ---
 
@@ -19,7 +22,13 @@ Just like Chennai's famous filter coffee, this language is simple, strong, and g
 - 🔑 Variables with `vechiko`
 - 🔍 Conditional logic with `iruntha ... ilana ...`
 - 🔁 `varai` for loops
+- 📦 `seyyu` for functions
 - 🖥️ REPL and script execution support
+- 📋 List support with built-in functions:
+  - `push` → add an element to a list
+  - `pop` → remove last element
+  - `remove` → remove a specific value
+  - `length` → get list size
 
 ---
 
@@ -28,7 +37,7 @@ Just like Chennai's famous filter coffee, this language is simple, strong, and g
 For now, install from source:
 
 ```bash
-git clone https://github.com/yourusername/filterKaapi.git
+git clone https://github.com/chiddesh/filterKaapi.git
 cd filterKaapi
 pip install .
 ```
@@ -47,11 +56,34 @@ kaapi
 
 ### 🔤 Language Syntax
 
+Input
+
+```bash
+notepaniko <var_name> "message"
+```
+
+- example
+  ```bash
+  notepaniko name "Enter Name"
+  kaapi name
+  ```
+- output
+  ```bash
+  "Enter Name:" your_name
+  your_name
+  ```
+
 Printing
 
 ```bash
 kaapi "Vanakkam Chennai!"
 ```
+
+- output
+
+  ```bash
+  Vanakkam Chennai!
+  ```
 
 Variables
 
@@ -60,17 +92,93 @@ vechiko x = 10
 kaapi x
 ```
 
+- output
+
+  ```bash
+  10
+  ```
+
+Lists
+
+```bash
+vechiko myList = [1,2,3,4,5]
+kaapi myList
+```
+
+- output
+  ```bash
+  [1,2,3,4,5]
+  ```
+
+List Operations
+
+```bash
+vechiko myList = [1,2,3,4,5]
+push myList[6] → push operation appends
+kaapi myList
+pop mylist → pop's last element
+kaapi myList
+remove myList[1] → remove a particular element
+kaapi myList
+len myList → print the length of the list
+kaapi myList
+```
+
+- output
+  ```bash
+  [1,2,3,4,5,6] → after push operation
+  [1,2,3,4,5] → after pop operation
+  [2,3,4,5] → after remove operation
+  4 → len operation
+  ```
+
 Arithmetic
 
 ```bash
-kaapi 5 + 3 * 2
+kaapi (5 + 3) * 2
 ```
+
+- output
+
+  ```bash
+  10
+  ```
+
+Functions
+
+```bash
+seyyu function_name(args)
+    body
+mudinchu
+```
+
+- example
+
+  ```bash
+  seyyu add(a,b)
+      kaapi a + b
+  mudinchu
+
+  add(2,5)
+  ```
+
+- output
+
+  ```bash
+  7
+  ```
 
 If/Else
 
 ```bash
 5 > 3 iruntha kaapi "Periya number" ilana kaapi "Siriya number"
 ```
+
+- output
+
+  ```bash
+  Periya number
+  ```
 
 While Loop
 
@@ -81,6 +189,16 @@ varai i < 5
     vechiko i = i + 1
 end
 ```
+
+- output
+
+  ```bash
+  0
+  1
+  2
+  3
+  4
+  ```
 
 ## 🛠 Project Structure
 

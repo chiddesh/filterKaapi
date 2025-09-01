@@ -1,3 +1,5 @@
+from .functions import push,pop,remove,length
+
 def lexer(data):
     tokens = []
     lines = data.split("\n")
@@ -22,6 +24,9 @@ def lexer(data):
                 tokens.append(("VAR",var_name,"NUM",var_value))
             elif any(op in var_value for op in ["+","-","*","/","%","//",">","<","==",">=","<=", "!=","(",")"]):
                 tokens.append(("VAR",var_name,"EXPR",var_value))
+            elif var_value.startswith("[") and var_value.endswith("]"):
+                elements = [e.strip() for e in var_value[1:-1].split(",") if e.strip()]
+                tokens.append(("VAR",var_name,"LIST",elements))
             else:
                 tokens.append(("VAR",var_name,"VAR",var_value))
 
@@ -84,8 +89,24 @@ def lexer(data):
                     msg = msg[1:-1]
                 else:
                     var_name = rest
-                    msg = ""
+                    msg = msg[1:-1]
             tokens.append(("INPUT",var_name,msg))
+        
+        elif line.startswith("push"):
+            var_name,value = push(line)
+            tokens.append(("PUSH", var_name, value))
+        
+        elif line.startswith("pop"):
+            var_name = pop(line)
+            tokens.append(("POP",var_name))
+        
+        elif line.startswith("remove"):
+            var_name,value = remove(line)
+            tokens.append(("REMOVE",var_name,value))
+
+        elif line.startswith("len"):
+            var_name = length(line)
+            tokens.append(("LEN",var_name))
 
         else:
             tokens.append(("ERROR","SYNTAX ERROR",line))

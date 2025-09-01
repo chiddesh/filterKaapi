@@ -11,6 +11,18 @@ def parser(tokens):
                 symbol_table[var_name] = int(value)
             elif vtype == "EXPR":
                 symbol_table[var_name] = evaluate(value)
+            elif vtype == "LIST":
+                parsedList = []
+                for e in value:
+                    if e.isdigit():
+                        parsedList.append(int(e))
+                    elif e.startswith("\"") and e.endswith("\""):
+                        parsedList.append(e[1:-1])
+                    elif e in symbol_table:
+                        parsedList.append(symbol_table[e])
+                    else:
+                        parsedList.append(e)
+                symbol_table[var_name] = parsedList
             else:
                 symbol_table[var_name] = value
         
@@ -23,7 +35,14 @@ def parser(tokens):
             elif dtype == "EXPR":
                 print(evaluate(value))
             elif dtype == "VAR":
-                if value in symbol_table:
+                if "[" in value and value.endswith("]"):
+                    var_name,index = value[:-1].split("[",1)
+                    index = evaluate(index.strip())
+                    if var_name in symbol_table and isinstance(symbol_table[var_name],list):
+                        print(symbol_table[var_name][index])
+                    else:
+                        print("INVALID LIST ACCESS",value)
+                elif value in symbol_table:
                     print(symbol_table[value])
                 else:
                     print("UNDEFINED VARIABLE",value)
@@ -78,6 +97,28 @@ def parser(tokens):
                 symbol_table[var_name] = int(user_input)
             else:
                 symbol_table[var_name] = user_input
+        
+        elif token[0] == "PUSH":
+            _, var_name,raw_value = token
+            if var_name in symbol_table and isinstance(symbol_table[var_name],list):
+                value = evaluate(raw_value)
+                symbol_table[var_name].append(value)
+        
+        elif token[0] == "POP":
+            _,var_name= token
+            if var_name in symbol_table and isinstance(symbol_table[var_name],list):
+                symbol_table[var_name].pop()
+        
+        elif token[0] == "REMOVE":
+            _, var_name, raw_value = token
+            if var_name in symbol_table and isinstance(symbol_table[var_name],list):
+                value = evaluate(raw_value)
+                symbol_table[var_name].remove(value)
+        
+        elif token[0] == "LEN":
+            _, var_name = token
+            if var_name in symbol_table and isinstance(symbol_table[var_name],list):
+                print(len(symbol_table[var_name]))
 
         elif token[0] == "ERROR":
             _,error_msg,value = token
