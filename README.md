@@ -114,6 +114,7 @@ List Operations
 
 ```bash
 vechiko myList = [1,2,3,4,5]
+kaapi myList[0] → indexing
 push myList[6] → push operation appends
 kaapi myList
 pop mylist → pop's last element
@@ -126,6 +127,7 @@ kaapi myList
 
 - output
   ```bash
+  1 → after indexing
   [1,2,3,4,5,6] → after push operation
   [1,2,3,4,5] → after pop operation
   [2,3,4,5] → after remove operation

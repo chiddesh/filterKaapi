@@ -18,4 +18,4 @@ if __name__ == "__main__":
         code = openFile(sys.argv[1])
         run_code(code)
     else:
-        print("Usage: python main.py <filename>")
+        print("Usage: kaapi main.kaapi <filename>")
